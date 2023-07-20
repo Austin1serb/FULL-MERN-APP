@@ -6,7 +6,7 @@ export default props => {
 
     const navigate = useNavigate()
 
-    const [formData, setFormData]=useState({
+    const [formData, setFormData] = useState({
         title:'',
         price: "",
         description: "",
@@ -15,15 +15,16 @@ export default props => {
 
     const handleChange = (e) => {
         const { name, value } = e.target
-        // console.log(e.target.value)
+        
         setFormData(currentData => ({ ...currentData, [name]: value }))
+        console.log(formData)
 
 
     }
 
     const onSubmitHanlder = e =>{
         e.preventDefault();
-        axios.post(`http://localhost:8000/api/products`,formData)
+        axios.post(`http://localhost:8000/products`,formData)
         .then(res=>{
             setFormData({
                 title:"",
@@ -31,27 +32,33 @@ export default props => {
                 description: "",
             })
         })
+        // console.log(formData)
         .catch(err=>console.log("Error: ", err))
     }
 
     return(
         <div>
-            <form >
+            <fieldset>
+               <legend>Add a new Product </legend>
+            <form onSubmit={onSubmitHanlder}  >
+             
                 <p>
                     <label >Title: </label>
-                    <input type="text" value={formData.title}  onChange={handleChange} />
+                    <input name="title" type="text" value={formData.title}  onChange={handleChange} />
                 </p>
                 <p>
                     <label >Price: </label>
-                    <input type="text" value={formData.price}  onChange={handleChange} />
+                    <input name="price" type="text" value={formData.price}  onChange={handleChange} />
                 </p>
                 <p>
                     <label >Description: </label>
-                    <input type="text" value={formData.description} onChange={handleChange} />
+                    <input name="description" type="text" value={formData.description} onChange={handleChange} />
                 </p>
-                <input type="submit" onSubmit={onSubmitHanlder} />
-
+                
+                        <button>ADD</button>
             </form>
+            </fieldset>
+           
         </div>
     )
 
